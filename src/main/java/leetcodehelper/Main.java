@@ -9,10 +9,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import commands.Command;
-import commands.HashMapBuilder;
-import commands.MainCommand;
+import commands.custom.MainCommand;
 import commands.enums.Checkables;
 import commands.enums.Handleables;
+import utils.HashMapBuilder;
+import utils.TokenStringBuilder;
 
 public class Main {
 	public static boolean isRunning = true;
@@ -21,9 +22,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		Command main = new Command(new MainCommand(), new HashMapBuilder()
 				.add("print", new Command(tokens -> {
-					StringBuilder builder = new StringBuilder();
-					tokens.forEach(token -> builder.append(token + " "));
-					System.out.println(builder.toString());
+					System.out.println(new TokenStringBuilder(tokens).joinAll());
 				}, Checkables.IS_NOT_EMPTY, Handleables.CONSUME))
 				.add("exit", new Command(tokens -> isRunning = false, Checkables.IS_EMPTY, Handleables.CONSUME))
 				.build());

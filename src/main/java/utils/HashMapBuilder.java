@@ -1,6 +1,8 @@
-package commands;
+package utils;
 
 import java.util.HashMap;
+
+import commands.Command;
 
 public class HashMapBuilder {
 	

@@ -1,7 +1,10 @@
-package commands;
+package commands.custom;
 
 import java.util.Map;
 
+import commands.Checkable;
+import commands.Command;
+import commands.Executable;
 import commands.enums.Checkables;
 import commands.enums.Handleables;
 
