@@ -81,13 +81,13 @@ public class RequestProblemsCommand extends Command {
 			try {
 				HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 				System.out.println("Status code: " + httpResponse.statusCode());
-				System.out.println(httpResponse.body());
 				
 				Gson gson = new Gson();
 				Type type = new TypeToken<List<Problem>>() {}.getType();
 				String response = httpResponse.body();
 				Main.problemsList = gson.fromJson(response.substring(
 						response.indexOf('['), response.lastIndexOf(']')+1), type);
+				System.out.println("problems list obtained successfully");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
