@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import commands.Command;
 
+@Deprecated
 public class HashMapBuilder {
 	
 	private HashMap<String, Command> hashMap;
