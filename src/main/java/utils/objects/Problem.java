@@ -53,6 +53,30 @@ public class Problem {
 		return topicTags;
 	}
 
+	public void setAcRate(double acRate) {
+		this.acRate = acRate;
+	}
+
+	public void setPaidOnly(boolean paidOnly) {
+		this.paidOnly = paidOnly;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setFrontendQuestionId(String frontendQuestionId) {
+		this.frontendQuestionId = frontendQuestionId;
+	}
+
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public void setTopicTags(List<Tag> topicTags) {
+		this.topicTags = topicTags;
+	}
+
 	@Override
 	public String toString() {
 		return "Problem [acRate=" + acRate + ", paidOnly=" + paidOnly + ", title=" + title + ", frontendQuestionId="

@@ -1,19 +1,26 @@
 package commands.custom;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import commands.Command;
 import commands.enums.Checkables;
 import commands.enums.Handleables;
 import leetcodehelper.Main;
+import utils.objects.Problem;
 
 public class RequestProblemsCommand extends Command {
 	
@@ -58,7 +65,7 @@ public class RequestProblemsCommand extends Command {
 					+ "    \"skip\": 0,\r\n"
 					+ "    \"limit\": 10000,\r\n"
 					+ "    \"filters\": {\r\n"
-//					+ "	\"paidOnly\": false\r\n"
+//					+ "      \"paidOnly\": false\r\n"
 					+ "    }\r\n"
 					+ "  },\r\n"
 					+ "  \"operationName\": \"problemsetQuestionList\"\r\n"
@@ -74,7 +81,13 @@ public class RequestProblemsCommand extends Command {
 			try {
 				HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 				System.out.println("Status code: " + httpResponse.statusCode());
-				Main.problemsString = httpResponse.body();
+				System.out.println(httpResponse.body());
+				
+				Gson gson = new Gson();
+				Type type = new TypeToken<List<Problem>>() {}.getType();
+				String response = httpResponse.body();
+				Main.problemsList = gson.fromJson(response.substring(
+						response.indexOf('['), response.lastIndexOf(']')+1), type);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,4 +1,4 @@
-package commands.custom;
+package commands.custom.print;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ public class PrintCommand extends Command {
 	
 	public PrintCommand() {
 		// TODO Auto-generated constructor stub
-		super(null, null, Handleables.CLEAR);
+		super(null, Checkables.IS_NOT_EMPTY, Handleables.CLEAR);
 	}
 	
 	public Command setPrint() {
