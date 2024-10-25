@@ -19,7 +19,7 @@ public class PrintProblemsCommand extends Command {
 				return;
 			}
 			ProblemsTable problemsTable = new ProblemsTable(problemsList);
-			problemsList.forEach(System.out::println);
+			System.out.println(problemsTable.buildTable());  
 		}, Checkables.IS_EMPTY, Handleables.CONSUME);
 	}
 

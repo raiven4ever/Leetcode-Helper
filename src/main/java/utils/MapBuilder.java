@@ -4,6 +4,10 @@ import java.util.Map;
 
 import commands.Command;
 
+@Deprecated
+/** this was just a bad idea from the start
+ * 
+ */
 public class MapBuilder {
 	
 	private Map<String, Command> map;

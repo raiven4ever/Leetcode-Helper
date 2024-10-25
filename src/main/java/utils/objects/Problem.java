@@ -6,7 +6,7 @@ public class Problem {
 	private double acRate;
 	private boolean paidOnly;
 	private String title;
-	private String frontendQuestionId;
+	private int frontendQuestionId;
 	private String difficulty;
 	private List<Tag> topicTags;
 	
@@ -24,7 +24,7 @@ public class Problem {
 		
 		@Override
 		public String toString() {
-			return "Tag [name=" + name + ", slug=" + slug + "]";
+			return name;
 		}
 		
 	}
@@ -41,7 +41,7 @@ public class Problem {
 		return title;
 	}
 
-	public String getFrontendQuestionId() {
+	public int getFrontendQuestionId() {
 		return frontendQuestionId;
 	}
 
@@ -65,7 +65,7 @@ public class Problem {
 		this.title = title;
 	}
 
-	public void setFrontendQuestionId(String frontendQuestionId) {
+	public void setFrontendQuestionId(int frontendQuestionId) {
 		this.frontendQuestionId = frontendQuestionId;
 	}
 

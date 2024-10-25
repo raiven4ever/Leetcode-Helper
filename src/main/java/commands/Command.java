@@ -2,6 +2,7 @@ package commands;
 
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Command {
 	
@@ -79,6 +80,13 @@ public class Command {
 
 	protected Handleable getHandleable() {
 		return handleable;
+	}
+	
+	public Command addSubordinate(String name, Command command) {
+		if (subordinates == null)
+			subordinates = new ConcurrentHashMap<String, Command>();//default
+		subordinates.put(name, command);
+		return this;
 	}
 
 }
