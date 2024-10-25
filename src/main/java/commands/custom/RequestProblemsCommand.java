@@ -27,6 +27,24 @@ public class RequestProblemsCommand extends Command {
 	public RequestProblemsCommand() {
 		// TODO Auto-generated constructor stub
 		super(tokens -> {
+			int limit = 100000;
+			if (tokens.size() > 1) {
+				System.out.println("argument must be no more than one");
+				return;
+			}
+			if (tokens.size() > 0)
+				try {
+					limit = Integer.valueOf(tokens.peek());
+					if (limit < 0)
+						throw new IllegalArgumentException();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					System.out.println("argument must be an integer");
+					return;
+				} catch (IllegalArgumentException e){
+					System.out.println("argument must be a positive integer");
+					return;
+				}
 			ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 			executorService.scheduleWithFixedDelay(new Runnable() {
 				int count = 0;
@@ -36,41 +54,7 @@ public class RequestProblemsCommand extends Command {
 					System.out.println(count + (count++ == 1 ? " second has" : " seconds have") + " passed");
 				}
 			}, 0, 1, TimeUnit.SECONDS);
-			String query = "{\r\n"
-					+ "  \"query\": \"\r\n"
-					+ "    query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {\r\n"
-					+ "      problemsetQuestionList: questionList(\r\n"
-					+ "        categorySlug: $categorySlug\r\n"
-					+ "        limit: $limit\r\n"
-					+ "        skip: $skip\r\n"
-					+ "        filters: $filters\r\n"
-					+ "      ) {\r\n"
-					+ "        total: totalNum\r\n"
-					+ "        questions: data {\r\n"
-					+ "          acRate\r\n"
-					+ "          difficulty\r\n"
-					+ "          frontendQuestionId: questionFrontendId\r\n"
-					+ "          paidOnly: isPaidOnly\r\n"
-					+ "          title\r\n"
-					+ "          topicTags {\r\n"
-					+ "            name\r\n"
-					+ "            slug\r\n"
-					+ "          }\r\n"
-					+ "        }\r\n"
-					+ "      }\r\n"
-					+ "    }\r\n"
-					+ "  \",\r\n"
-					+ "  \"variables\": {\r\n"
-					+ "    \"categorySlug\": \"all-code-essentials\",\r\n"
-					+ "    \"skip\": 0,\r\n"
-					+ "    \"limit\": 10000,\r\n"
-					+ "    \"filters\": {\r\n"
-//					+ "      \"paidOnly\": false\r\n"
-					+ "    }\r\n"
-					+ "  },\r\n"
-					+ "  \"operationName\": \"problemsetQuestionList\"\r\n"
-					+ "}\r\n"
-					+ "";
+			String query = getQuery(limit);
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest httpRequest = HttpRequest.newBuilder()
 					.uri(URI.create("https://leetcode.com/graphql/"))
@@ -97,7 +81,47 @@ public class RequestProblemsCommand extends Command {
 			} finally {
 				executorService.shutdown();
 			}
-		}, Checkables.IS_EMPTY, Handleables.CONSUME);
+		}, null, Handleables.CONSUME);
+		
+	}
+
+	private static String getQuery(int limit) {
+		String query = "{\r\n"
+				+ "  \"query\": \"\r\n"
+				+ "    query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {\r\n"
+				+ "      problemsetQuestionList: questionList(\r\n"
+				+ "        categorySlug: $categorySlug\r\n"
+				+ "        limit: $limit\r\n"
+				+ "        skip: $skip\r\n"
+				+ "        filters: $filters\r\n"
+				+ "      ) {\r\n"
+				+ "        total: totalNum\r\n"
+				+ "        questions: data {\r\n"
+				+ "          acRate\r\n"
+				+ "          difficulty\r\n"
+				+ "          frontendQuestionId: questionFrontendId\r\n"
+				+ "          paidOnly: isPaidOnly\r\n"
+				+ "          title\r\n"
+				+ "          topicTags {\r\n"
+				+ "            name\r\n"
+				+ "            slug\r\n"
+				+ "          }\r\n"
+				+ "        }\r\n"
+				+ "      }\r\n"
+				+ "    }\r\n"
+				+ "  \",\r\n"
+				+ "  \"variables\": {\r\n"
+				+ "    \"categorySlug\": \"all-code-essentials\",\r\n"
+				+ "    \"skip\": 0,\r\n"
+				+ "    \"limit\": "+limit+",\r\n"
+				+ "    \"filters\": {\r\n"
+//					+ "      \"paidOnly\": false\r\n"
+				+ "    }\r\n"
+				+ "  },\r\n"
+				+ "  \"operationName\": \"problemsetQuestionList\"\r\n"
+				+ "}\r\n"
+				+ "";
+		return query;
 	}
 	
 }

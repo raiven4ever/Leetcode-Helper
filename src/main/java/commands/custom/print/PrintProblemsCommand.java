@@ -11,7 +11,7 @@ public class PrintProblemsCommand extends Command {
 	
 	public PrintProblemsCommand() {
 		/* TODO:
-		 * make it so that problems are displayed in a table
+		 * make it so that problems are displayed in a table [done]
 		 * */
 		super(tokens -> {
 			if (problemsList == null) {

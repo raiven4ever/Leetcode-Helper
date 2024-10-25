@@ -16,12 +16,12 @@ public class ProblemsTable {
 	
 	public String buildTable() {
 		StringBuilder builder = new StringBuilder();
-		int acRateWidth = 0;
-		int paidOnlyWidth = 0;
-		int titleWidth = 0;
-		int frontendQuestionIdWidth = 0;
+		int acRateWidth = "Acceptance Rate".length();
+		int paidOnlyWidth = "Paid".length();
+		int titleWidth = "Title".length();
+		int frontendQuestionIdWidth = "ID".length();
 		int difficultyWidth = "Difficulty".length();
-		int topicTagsWidth = 0;
+		int topicTagsWidth = "Tags".length();
 		for (Problem problem : problemsList) {
 			acRateWidth = Math.max(acRateWidth, Double.toString(problem.getAcRate()).length());
 			paidOnlyWidth = Math.max(paidOnlyWidth, Boolean.toString(problem.isPaidOnly()).length());
@@ -44,7 +44,7 @@ public class ProblemsTable {
 		        "Title",
 		        "Difficulty",
 		        "Paid",
-		        "AC Rate",
+		        "Acceptance Rate",
 		        "Tags"));
 
 		int totalWidth = frontendQuestionIdWidth + titleWidth + difficultyWidth + paidOnlyWidth + acRateWidth + topicTagsWidth + 19; // 19 accounts for extra characters in the format (| and spaces)

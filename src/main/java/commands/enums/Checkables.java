@@ -26,8 +26,32 @@ public enum Checkables implements Checkable {
 				System.out.println("argument must not be empty");
 			return b;
 		}
+	},
+	IS_INTEGER{
+		@Override
+		public boolean check(Queue<String> tokens) {
+			// TODO Auto-generated method stub
+			try {
+				Integer valueOf = Integer.valueOf(tokens.peek());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("argument must be a number");
+				return false;
+			}
+			return true;
+		}
+		
 	};
-
+	
+	/*	#|#########################################################################################|#
+	 *  #|######################################## METHODS ########################################|#
+	 *  #|#########################################################################################|#
+	 * */
+	
+	public static Checkable LESS_THAN(int i) {
+		return tokens -> tokens.size() < i;
+	}
+	
 	public static Checkable EQUAL(int i) {
 		// TODO Auto-generated method stub
 		return tokens -> {
@@ -104,5 +128,11 @@ public enum Checkables implements Checkable {
 				System.out.println("number of criteria returning true for the given argument(s) must be even");
 			return b;
 		};
+	}
+
+	@Override
+	public boolean check(Queue<String> tokens) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
