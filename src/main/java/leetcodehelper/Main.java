@@ -2,12 +2,10 @@ package leetcodehelper;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.TreeSet;
 
 import commands.Command;
 import commands.custom.ExitCommand;
@@ -17,9 +15,7 @@ import commands.custom.print.PrintCommand;
 import commands.custom.print.PrintProblemsCommand;
 import commands.custom.print.PrintTagsNameCMD;
 import commands.custom.print.PrintTagsSlugCMD;
-import commands.enums.Checkables;
 import commands.enums.Commands;
-import commands.enums.Handleables;
 import utils.objects.Problem;
 import utils.objects.Problem.Tag;
 

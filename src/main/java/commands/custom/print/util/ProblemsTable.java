@@ -1,10 +1,8 @@
 package commands.custom.print.util;
 
 import java.util.List;
-import java.util.function.ToIntFunction;
 
 import utils.objects.Problem;
-import utils.objects.Problem.Tag;
 
 public class ProblemsTable {
 

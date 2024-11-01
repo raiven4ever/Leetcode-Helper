@@ -1,7 +1,5 @@
 package commands.custom;
 
-import java.util.Map;
-
 import commands.Checkable;
 import commands.Command;
 import commands.Executable;
