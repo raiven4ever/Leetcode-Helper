@@ -2,13 +2,18 @@ package commands.custom;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +26,7 @@ import commands.enums.Checkables;
 import commands.enums.Handleables;
 import leetcodehelper.Main;
 import utils.objects.Problem;
+import utils.objects.Problem.Tag;
 
 public class RequestProblemsCommand extends Command {
 	
@@ -69,12 +75,19 @@ public class RequestProblemsCommand extends Command {
 				Gson gson = new Gson();
 				Type type = new TypeToken<List<Problem>>() {}.getType();
 				String response = httpResponse.body();
-				Main.problemsList = gson.fromJson(response.substring(
-						response.indexOf('['), response.lastIndexOf(']')+1), type);
+				Main.setProblemsList(gson.fromJson(response.substring(
+						response.indexOf('['), response.lastIndexOf(']')+1), type));
 				System.out.println("problems list obtained successfully");
+				
+				Main.setTags(new HashSet<Tag>());
+				Main.getProblemsList().forEach(problem -> problem.getTopicTags().forEach(tag -> Main.getTags().add(tag)));
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (e instanceof ConnectException)
+					System.out.println("the user must have an internet connection");
+				else
+					e.printStackTrace();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

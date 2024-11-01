@@ -11,7 +11,7 @@ public class PrintCommand extends Command {
 	
 	public PrintCommand() {
 		// TODO Auto-generated constructor stub
-		super(null, Checkables.IS_NOT_EMPTY, Handleables.CLEAR);
+		super(null, Checkables.IS_NOT_EMPTY, Handleables.CONSUME);
 	}
 	
 	public Command setPrint() {

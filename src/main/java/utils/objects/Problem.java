@@ -1,6 +1,7 @@
 package utils.objects;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Problem {
 	private double acRate;
@@ -10,7 +11,7 @@ public class Problem {
 	private String difficulty;
 	private List<Tag> topicTags;
 	
-	public static class Tag{
+	public static class Tag implements Comparable<Tag>{
 		private String name;
 		private String slug;
 		
@@ -25,6 +26,26 @@ public class Problem {
 		@Override
 		public String toString() {
 			return name;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+		    if (this == obj) return true;
+		    if (obj == null || !(obj instanceof Tag)) return false;
+		    Tag other = (Tag) obj;
+		    return Objects.equals(name, other.name) && Objects.equals(slug, other.slug);
+		}
+		
+		@Override
+		public int hashCode() {
+			// TODO Auto-generated method stub
+			return Objects.hash(name, slug);
+		}
+
+		@Override
+		public int compareTo(Tag o) {
+			// TODO Auto-generated method stub
+			return name.compareToIgnoreCase(o.name);
 		}
 		
 	}

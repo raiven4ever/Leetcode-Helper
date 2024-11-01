@@ -1,35 +1,44 @@
 package leetcodehelper;
 
 import java.util.ArrayDeque;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import commands.Command;
+import commands.custom.ExitCommand;
+import commands.custom.MainCommand;
 import commands.custom.RequestProblemsCommand;
 import commands.custom.print.PrintCommand;
 import commands.custom.print.PrintProblemsCommand;
-import commands.custom.MainCommand;
+import commands.custom.print.PrintTagsNameCMD;
+import commands.custom.print.PrintTagsSlugCMD;
 import commands.enums.Checkables;
 import commands.enums.Commands;
 import commands.enums.Handleables;
-import utils.MapBuilder;
-import utils.TokenStringBuilder;
 import utils.objects.Problem;
+import utils.objects.Problem.Tag;
 
 public class Main {
 	public static boolean isRunning = true;
-	public static List<Problem> problemsList;
+	private static List<Problem> problemsList;
+	private static Set<Tag> tags;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Command main = new MainCommand()
 				.addSubordinate("print", new PrintCommand().setPrint()
-						.addSubordinate("problems", new PrintProblemsCommand()))
+						.addSubordinate("problems", new PrintProblemsCommand())
+						.addSubordinate("tags", Commands.PARENT.get()
+								.addSubordinate("name", new PrintTagsNameCMD())
+								.addSubordinate("slug", new PrintTagsSlugCMD())))
 				.addSubordinate("request", Commands.PARENT.get()
 						.addSubordinate("problems", new RequestProblemsCommand()))
-				.addSubordinate("exit", new Command(tokens -> isRunning = false, Checkables.IS_EMPTY, Handleables.CONSUME));
+				.addSubordinate("exit", new ExitCommand());
 		Scanner scanner = new Scanner(System.in);
 		while (isRunning) {
 			System.out.print("leetcode helper: ");
@@ -37,5 +46,33 @@ public class Main {
 		}
 		scanner.close();
 	}
+	
+	public static void setTags(Set<Tag> tags) {
+		Main.tags = tags;
+	}
+
+	public static Set<Tag> getTags() {
+		// TODO Auto-generated method stub
+		boolean b = tags != null;
+		if (!b)
+			System.out.println("there are currently no tags in the program.");
+		return b ? tags : new HashSet<Tag>();
+	}
+	
+	public static void setProblems(List<Problem> problems) {
+		setProblemsList(problems);
+	}
+	
+	public static List<Problem> getProblemsList(){
+		boolean b = problemsList != null;
+		if (!b)
+			System.out.println("there are currently no leetcode problems in the program.");
+		return b ? problemsList : new ArrayList<Problem>();
+	}
+
+	public static void setProblemsList(List<Problem> problemsList) {
+		Main.problemsList = problemsList;
+	}
+
 
 }
