@@ -3,6 +3,7 @@ package commands.custom;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import commands.Command;
@@ -27,10 +28,12 @@ public class FIlterCommand extends Command {
 	public FIlterCommand setFilter() {
 		// TODO Auto-generated method stub
 		setExecutable(tokens -> {
-			//setup;
+			//ingredients;
 			pseudosubordinates = new HashMap<String, Command>();
 			excludedSet = new HashSet<Tag>();
 			includedSet = new HashSet<Tag>();
+			
+			//setup;
 			buildSubordinates();
 			Set<Tag> tags = Main.getTags();
 			tags.stream().forEach(tag -> excludedSet.add(tag));
@@ -38,33 +41,56 @@ public class FIlterCommand extends Command {
 			//return conditions
 			if (tags.isEmpty())
 				return;
-			if (getSubordinates().containsKey(tokens.peek()))//if direct descendant is called
+			if (getSubordinates().containsKey(tokens.peek()))//if direct subordinate is called
 				return;
 			
-			//handle the unofficial subordinates
+			//handle the tag filters
 			while (true) {
-				String slug = tokens.poll();
-				if (slug == null)
+				if (!hasTagFilters(tokens))
 					break;
+				String slug = tokens.poll();
 				Command command = pseudosubordinates.get(slug);
 				if (command == null) {
-					System.out.println("no such tag " + slug + "exists");
+					System.out.println(String.format("no such tag %s exists", slug));
 					continue;
 				}
 				command.run(tokens);
 			}
 			
-			List<Problem> list = Main.getProblemsList()
-			.stream()
-			.filter(problem -> !problem.getTopicTags()
-					.stream()
-					.anyMatch(tag -> excludedSet.contains(tag)))
-			.filter(problem -> problem.getTopicTags().containsAll(includedSet))
-			.toList();
-			ProblemsTable table = new ProblemsTable(list);
-			System.out.println(table.buildTable());
+			//handle the case where no option is mentioned
+			if (tokens.isEmpty())
+				tokens.add(">print-table");
+			
+			//handle the options
+			while (true) {
+				if (tokens.isEmpty())
+					break;
+				String token = tokens.poll();
+				switch (token) {
+				case ">print-table":{
+					List<Problem> list = Main.getProblemsList()
+						.stream()
+						.filter(problem -> !problem.getTopicTags()
+								.stream()
+								.anyMatch(tag -> excludedSet.contains(tag)))
+						.filter(problem -> problem.getTopicTags().containsAll(includedSet))
+						.toList();
+					ProblemsTable table = new ProblemsTable(list);
+					System.out.println(table.buildTable());
+				}break;
+				default:{
+					System.out.println(String.format("no such option %s exists", token));
+				}
+				}
+			}
+
 		});
 		return this;
+	}
+
+	private boolean hasTagFilters(Queue<String> tokens) {
+		// TODO Auto-generated method stub
+		return tokens.stream().anyMatch(token -> token.startsWith("+") || token.startsWith("-") || token.startsWith("?"));
 	}
 
 	private void buildSubordinates() {
@@ -103,7 +129,29 @@ public class FIlterCommand extends Command {
 		
 		//the only direct subordinate of this command
 		addSubordinate("help", new Command(tokens -> {
-			Main.getTags().stream().sorted().forEach(tag -> System.out.println(tag.getSlug()));
+			Main
+			.getTags()
+			.stream()
+			.sorted((tag1, tag2) -> {
+				long count1 = Main.getProblemsList()
+					.stream()
+					.filter(problem -> problem.getTopicTags().contains(tag1))
+					.count();
+				
+				long count2 = Main.getProblemsList()
+					.stream()
+					.filter(problem -> problem.getTopicTags().contains(tag2))
+					.count();
+				
+				return Long.compare(count1, count2);
+			})
+			.forEach(tag -> {
+				long count = Main.getProblemsList()
+					.stream()
+					.filter(problem -> problem.getTopicTags().contains(tag))
+					.count();
+				System.out.println(String.format("%s - present in %d %s", tag.getSlug(), count, (count > 1 ? "problems" : "problem")));
+			});
 		}, Checkables.IS_EMPTY, Handleables.CONSUME));
 	}
 

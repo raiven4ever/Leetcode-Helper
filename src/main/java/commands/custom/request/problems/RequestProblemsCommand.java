@@ -70,6 +70,8 @@ public class RequestProblemsCommand extends Command {
 				fromJson.forEach(problem -> {
 					if (problem.getTopicTags().isEmpty())
 						problem.setTopicTags(List.of(new Tag("Untagged", "untagged")));
+					if (problem.isPaidOnly())
+						problem.setTopicTags(List.of(new Tag("Paid", "paid")));
 				});
 				
 				Main.setProblemsList(fromJson);

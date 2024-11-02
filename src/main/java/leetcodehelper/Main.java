@@ -37,11 +37,12 @@ public class Main {
 						.addSubordinate("problems", new RequestProblemsCommand()))
 				.addSubordinate("filter", new FIlterCommand().setFilter())
 				.addSubordinate("exit", new ExitCommand());
+		
 		Scanner scanner = new Scanner(System.in);
 		main.run("request problems");
 		while (isRunning) {
 			System.out.print("leetcode helper: ");
-			main.run(new ArrayDeque<String>(List.of(scanner.nextLine().split(" "))));
+			main.run(scanner.nextLine());
 		}
 		scanner.close();
 	}
