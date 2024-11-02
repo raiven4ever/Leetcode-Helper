@@ -31,7 +31,7 @@ public enum Checkables implements Checkable {
 		public boolean check(Queue<String> tokens) {
 			// TODO Auto-generated method stub
 			try {
-				Integer valueOf = Integer.valueOf(tokens.peek());
+				Integer.valueOf(tokens.peek());
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				System.out.println("argument must be a number");

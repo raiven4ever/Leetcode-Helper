@@ -1,5 +1,7 @@
 package commands;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +38,7 @@ public class Command {
 		if (handleable == null)
 			return;
 		String handle = handleable.handle(tokens);
-		if (checkSubordinates) {
+		if (checkSubordinates && handle != null) {
 			boolean hasSubordinates = subordinates != null && !subordinates.isEmpty();
 			Command command = hasSubordinates ? subordinates.get(handle) : null;
 			if (command != null)
@@ -44,6 +46,11 @@ public class Command {
 			else if (hasSubordinates)
 				System.out.printf("no command of name %s is found\r\n", handle);
 		}
+	}
+
+	public void run(String string) {
+		// TODO Auto-generated method stub
+		run (new ArrayDeque<String>(Arrays.asList(string.split(" "))));
 	}
 
 	public Command setExecutable(Executable executable) {

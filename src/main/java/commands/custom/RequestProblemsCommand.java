@@ -70,8 +70,15 @@ public class RequestProblemsCommand extends Command {
 				Gson gson = new Gson();
 				Type type = new TypeToken<List<Problem>>() {}.getType();
 				String response = httpResponse.body();
-				Main.setProblemsList(gson.fromJson(response.substring(
-						response.indexOf('['), response.lastIndexOf(']')+1), type));
+				
+				List<Problem> fromJson = gson.fromJson(response.substring(
+						response.indexOf('['), response.lastIndexOf(']')+1), type);
+				fromJson.forEach(problem -> {
+					if (problem.getTopicTags().isEmpty())
+						problem.setTopicTags(List.of(new Tag("Untagged", "untagged")));
+				});
+				
+				Main.setProblemsList(fromJson);
 				System.out.println("problems list obtained successfully");
 				
 				Main.setTags(new HashSet<Tag>());

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import commands.Command;
 import commands.custom.ExitCommand;
+import commands.custom.FIlterCommand;
 import commands.custom.MainCommand;
 import commands.custom.RequestProblemsCommand;
 import commands.custom.print.PrintCommand;
@@ -34,8 +35,10 @@ public class Main {
 								.addSubordinate("slug", new PrintTagsSlugCMD())))
 				.addSubordinate("request", Commands.PARENT.get()
 						.addSubordinate("problems", new RequestProblemsCommand()))
+				.addSubordinate("filter", new FIlterCommand().setFilter())
 				.addSubordinate("exit", new ExitCommand());
 		Scanner scanner = new Scanner(System.in);
+		main.run("request problems");
 		while (isRunning) {
 			System.out.print("leetcode helper: ");
 			main.run(new ArrayDeque<String>(List.of(scanner.nextLine().split(" "))));

@@ -12,6 +12,12 @@ public class Problem {
 	private List<Tag> topicTags;
 	
 	public static class Tag implements Comparable<Tag>{
+		
+		public Tag(String name, String slug) {
+			this.name = name;
+			this.slug = slug;
+		}
+
 		private String name;
 		private String slug;
 		
