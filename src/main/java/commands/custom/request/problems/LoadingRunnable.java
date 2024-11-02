@@ -1,7 +1,5 @@
 package commands.custom.request.problems;
 
-import java.util.Arrays;
-
 public class LoadingRunnable implements Runnable {
 	
 	int i = 0;
