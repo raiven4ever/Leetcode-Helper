@@ -1,4 +1,4 @@
-package commands.custom;
+package commands.custom.request.problems;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -47,14 +47,7 @@ public class RequestProblemsCommand extends Command {
 					return;
 				}
 			ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-			executorService.scheduleWithFixedDelay(new Runnable() {
-				int count = 0;
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					System.out.println(count + (count++ == 1 ? " second has" : " seconds have") + " passed");
-				}
-			}, 0, 1, TimeUnit.SECONDS);
+			executorService.scheduleWithFixedDelay(new LoadingRunnable(), 0, 500, TimeUnit.MILLISECONDS);
 			String query = getQuery(limit);
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest httpRequest = HttpRequest.newBuilder()
