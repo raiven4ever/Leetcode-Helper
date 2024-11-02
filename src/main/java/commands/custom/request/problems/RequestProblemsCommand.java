@@ -114,6 +114,7 @@ public class RequestProblemsCommand extends Command {
 				+ "          frontendQuestionId: questionFrontendId\r\n"
 				+ "          paidOnly: isPaidOnly\r\n"
 				+ "          title\r\n"
+				+ "          titleSlug\r\n"
 				+ "          topicTags {\r\n"
 				+ "            name\r\n"
 				+ "            slug\r\n"

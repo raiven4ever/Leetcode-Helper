@@ -8,6 +8,7 @@ public class Problem {
 	private double acRate;
 	private boolean paidOnly;
 	private String title;
+	private String titleSlug;
 	private int frontendQuestionId;
 	private String difficulty;
 	private List<Tag> topicTags;
@@ -69,6 +70,10 @@ public class Problem {
 		return title;
 	}
 
+	public String getTitleSlug() {
+		return titleSlug;
+	}
+
 	public int getFrontendQuestionId() {
 		return frontendQuestionId;
 	}
@@ -91,6 +96,10 @@ public class Problem {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public void setTitleSlug(String titleSlug) {
+		this.titleSlug = titleSlug;
 	}
 
 	public void setFrontendQuestionId(int frontendQuestionId) {

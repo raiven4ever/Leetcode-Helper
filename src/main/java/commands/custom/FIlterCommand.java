@@ -1,5 +1,6 @@
 package commands.custom;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +58,14 @@ public class FIlterCommand extends Command {
 				command.run(tokens);
 			}
 			
+			List<Problem> list = new ArrayList<Problem>(Main.getProblemsList()
+					.stream()
+					.filter(problem -> !problem.getTopicTags()
+							.stream()
+							.anyMatch(tag -> excludedSet.contains(tag)))
+					.filter(problem -> problem.getTopicTags().containsAll(includedSet))
+					.toList());
+			
 			//handle the case where no option is mentioned
 			if (tokens.isEmpty())
 				tokens.add(">print-table");
@@ -67,16 +76,25 @@ public class FIlterCommand extends Command {
 					break;
 				String token = tokens.poll();
 				switch (token) {
+				case ">pt":
 				case ">print-table":{
-					List<Problem> list = Main.getProblemsList()
-						.stream()
-						.filter(problem -> !problem.getTopicTags()
-								.stream()
-								.anyMatch(tag -> excludedSet.contains(tag)))
-						.filter(problem -> problem.getTopicTags().containsAll(includedSet))
-						.toList();
 					ProblemsTable table = new ProblemsTable(list);
 					System.out.println(table.buildTable());
+				}break;
+				case ">sbd-i":
+				case ">sort-by-difficulty-increasing":{
+					list.sort((o1, o2) -> {
+						if (!o1.getDifficulty().equalsIgnoreCase(o2.getDifficulty())) {
+							return Integer.compare(difficultyToInt(o1), difficultyToInt(o2));
+						}
+						return Double.compare(o2.getAcRate(), o1.getAcRate());
+					});
+				}break;
+				case ">lo":
+				case ">link-only":{
+					list.stream().forEach(problem -> {
+						System.out.println("leetcode.com/problems/" + problem.getTitleSlug());
+					});
 				}break;
 				default:{
 					System.out.println(String.format("no such option %s exists", token));
@@ -86,6 +104,21 @@ public class FIlterCommand extends Command {
 
 		});
 		return this;
+	}
+
+	private int difficultyToInt(Problem o1) {
+		// TODO Auto-generated method stub
+		String easy = "Easy";
+		String medium = "Medium";
+		String hard = "Hard";
+		String difficulty = o1.getDifficulty();
+		if (difficulty.equalsIgnoreCase(easy))
+			return 1;
+		if (difficulty.equalsIgnoreCase(medium))
+			return 2;
+		if (difficulty.equalsIgnoreCase(hard))
+			return 3;
+		return 0;
 	}
 
 	private boolean hasTagFilters(Queue<String> tokens) {
