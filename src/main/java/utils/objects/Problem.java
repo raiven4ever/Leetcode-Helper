@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Problem {
+	
 	private double acRate;
 	private boolean paidOnly;
 	private String title;
