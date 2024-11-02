@@ -56,9 +56,10 @@ public class RequestProblemsCommand extends Command {
 	                .header("Accept", "application/json")
 					.POST(HttpRequest.BodyPublishers.ofString(query.replaceAll("\r\n", ""), StandardCharsets.UTF_8))
 					.build();
+			
+			HttpResponse<String> httpResponse = null;
 			try {
-				HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-				System.out.println("Status code: " + httpResponse.statusCode());
+				httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 				
 				Gson gson = new Gson();
 				Type type = new TypeToken<List<Problem>>() {}.getType();
@@ -87,6 +88,7 @@ public class RequestProblemsCommand extends Command {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
+				System.out.println("status code: " + httpResponse.statusCode());
 				executorService.shutdown();
 			}
 		}, null, Handleables.CONSUME);
