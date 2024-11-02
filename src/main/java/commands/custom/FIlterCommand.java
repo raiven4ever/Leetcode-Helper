@@ -16,7 +16,7 @@ import utils.objects.Problem.Tag;
 
 public class FIlterCommand extends Command {
 	
-	HashMap<String, Command> pseudosubordinates;
+	private HashMap<String, Command> pseudosubordinates;
 	private Set<Tag> excludedSet;
 	private Set<Tag> includedSet;
 	
