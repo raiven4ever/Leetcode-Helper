@@ -3,9 +3,7 @@ package commands.custom;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import commands.Command;
 import commands.custom.print.util.ProblemsTable;
