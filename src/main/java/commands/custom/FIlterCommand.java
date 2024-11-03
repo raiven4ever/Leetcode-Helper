@@ -187,5 +187,5 @@ public class FIlterCommand extends Command {
 			});
 		}, Checkables.IS_EMPTY, Handleables.CONSUME));
 	}
-
+	
 }
